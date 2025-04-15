@@ -123,3 +123,11 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# ZOHO API credentials
+ZOHO_CLIENT_ID = '1000.GUSALZGUANLHR4MPPIKAJZX7VBGUBX'
+ZOHO_CLIENT_SECRET = '8bece220c8d2477743194a1ad0baf92c8aa57276f1'
+ZOHO_REDIRECT_URL = 'http://localhost:8000/oauth2callback/'
+ZOHO_ACCOUNTS_URL = 'https://accounts.zoho.com'
+ZOHO_API_DOMAIN = 'https://www.zohoapis.com'
+ZOHO_SCOPE = 'ZohoCRM.modules.ALL'
