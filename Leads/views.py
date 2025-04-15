@@ -27,22 +27,38 @@ def zoho_auth(request):
         f"client_id={settings.ZOHO_CLIENT_ID}&"
         f"response_type=code&"
         f"access_type=offline&"
-        f"redirect_url={settings.ZOHO_REDIRECT_URL}"
+        f"redirect_uri={settings.ZOHO_REDIRECT_URL}"
     )
+    print("Redirect URI being sent:", settings.ZOHO_REDIRECT_URL)
     return redirect(auth_url)
 
 def zoho_callback(request):
     code = request.GET.get('code')
+    if not code:
+        return render(request, 'zoho_tokens.html', {'tokens': None})
     token_url =f"{settings.ZOHO_ACCOUNTS_URL}/oauth/v2/token"
 
     data ={
-        "grand_type" :"authorization_code",
+        "grant_type" :"authorization_code",
         "client_id" : settings.ZOHO_CLIENT_ID,
         "client_secret" : settings.ZOHO_CLIENT_SECRET,
-        "redirect_url" : settings.ZOHO_REDIRECT_URI,
+        "redirect_uri" : settings.ZOHO_REDIRECT_URL,
         "code" : code,
     }
     response = requests.post(token_url, data=data)
-    tokens = response.json()
+    print("Response: ", response.text)
+    print("Status Code: ", response.status_code)
+    print(f"Code:{code}")
+    print("Data being sent:", data)
+    print("Redirect URI being sent:", settings.ZOHO_REDIRECT_URL)
+
+    try:
+        tokens = response.json()
+    except Exception as e:
+        return render(request, 'zoho_tokens.html', {
+            'tokens': None,
+            'error': f"Failed to decode JSON: {str(e)}",
+            'response_text': response.text,}
+                )
 
     return render(request, 'zoho_tokens.html', {'tokens': tokens})

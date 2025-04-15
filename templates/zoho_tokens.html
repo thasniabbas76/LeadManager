@@ -17,11 +17,16 @@
             <strong>Expires In:</strong> {{ tokens.expires_in }} seconds
         </div>
         <p class="text-muted">Copy and store these tokens securely. You'll need the refresh token to generate new access tokens in the future.</p>
+    {% elif error %}
+        <div class="alert alert-danger">
+            <strong>Error:</strong> {{ error }}<br>
+            <pre>{{ response_text }}</pre>
+        </div>
     {% else %}
-        <div class="alert alert-danger">❌ No tokens received. Something went wrong.</div>
+        <p>No tokens yet. Please connect your Zoho Account.</p>
     {% endif %}
 
-    <a href="/" class="btn btn-primary mt-3">⬅️ Back to Home</a>
+    <a href="{% url 'zoho_auth' %}" class="btn btn-primary mt-3">⬅️ Back to Home</a>
 </div>
 
 </body>
