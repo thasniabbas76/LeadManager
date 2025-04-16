@@ -7,4 +7,5 @@ urlpatterns = [
     path('lead_list/', views.lead_list, name='lead_list'),
     path('zoho/auth/',views.zoho_auth, name='zoho_auth'),
     path('oauth2callback/',views.zoho_callback, name='zoho_callback'),
+    path('token/refresh/', views.token_refresh, name='token_refresh'),
 ]

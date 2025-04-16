@@ -1,17 +1,43 @@
 from django.shortcuts import render, redirect
 from .forms import LeadForm
-from .models import Lead
+from .models import Lead, ZohoAuth
 import requests
 from django.conf import settings
+from django.http import JsonResponse
+from .utils import refresh_access_token
 
 def lead_form(request):
     if request.method =='POST':
         form = LeadForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('lead_form')
+            lead = form.save()
+            token = refresh_access_token()
+            headers ={
+                'Authorization': f'Zoho-oauthtoken {token}',
+                'Content-Type': 'application/json',
+            }
+
+            data = {
+                "data": [
+                    {
+                        "Last_Name": lead.name or "Unknown",
+                        "Email": lead.email,
+                        "Phone": lead.phone_number,
+                        "Description": lead.message,
+                        "Company":"De'thas",
+                        "Lead_Source": lead.lead_source,
+                    }
+                ]
+            }
+            response = requests.post(
+                'https://www.zohoapis.in/crm/v2/Leads',
+                headers=headers,
+                json=data
+            )
+            print("Zoho response:", response.status_code, response.json())
+            return redirect('thanks')
     else:
-        form = LeadForm()
+        form=LeadForm
     return render(request, 'lead_form.html',{'form':form})
 def thanks(request):
     return render(request, 'thanks.html')
@@ -34,8 +60,6 @@ def zoho_auth(request):
 
 def zoho_callback(request):
     code = request.GET.get('code')
-    if not code:
-        return render(request, 'zoho_tokens.html', {'tokens': None})
     token_url =f"{settings.ZOHO_ACCOUNTS_URL}/oauth/v2/token"
 
     data ={
@@ -46,19 +70,17 @@ def zoho_callback(request):
         "code" : code,
     }
     response = requests.post(token_url, data=data)
-    print("Response: ", response.text)
-    print("Status Code: ", response.status_code)
-    print(f"Code:{code}")
-    print("Data being sent:", data)
-    print("Redirect URI being sent:", settings.ZOHO_REDIRECT_URL)
+    
 
-    try:
-        tokens = response.json()
-    except Exception as e:
-        return render(request, 'zoho_tokens.html', {
-            'tokens': None,
-            'error': f"Failed to decode JSON: {str(e)}",
-            'response_text': response.text,}
-                )
+    tokens = response.json()
+    ZohoAuth.objects.create(
+        access_token=tokens.get("access_token"),
+        refresh_token=tokens.get("refresh_token"),
+        token_type=tokens.get("token_type"),
+        expires_in=tokens.get("expires_in"),
+    )
 
     return render(request, 'zoho_tokens.html', {'tokens': tokens})
+def token_refresh(request):
+        access_token = refresh_access_token()
+        return JsonResponse({"access_token": access_token})
