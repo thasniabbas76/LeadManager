@@ -71,16 +71,21 @@ def zoho_callback(request):
     }
     response = requests.post(token_url, data=data)
     
-
     tokens = response.json()
-    ZohoAuth.objects.create(
-        access_token=tokens.get("access_token"),
-        refresh_token=tokens.get("refresh_token"),
-        token_type=tokens.get("token_type"),
-        expires_in=tokens.get("expires_in"),
-    )
+    print("Zoho Response:", tokens)
+    if "access_token" in tokens:
 
-    return render(request, 'zoho_tokens.html', {'tokens': tokens})
+        ZohoAuth.objects.create(
+            access_token=tokens.get("access_token"),
+            refresh_token=tokens.get("refresh_token"),
+            token_type=tokens.get("token_type"),
+            expires_in=tokens.get("expires_in"),
+        )
+
+        return render(request, 'zoho_tokens.html', {'tokens': tokens})
+    else:
+        error_message = tokens.get("error", "Unknown error")
+        return render(request, 'zoho_tokens.html', {'tokens':tokens, 'error': error_message})
 def token_refresh(request):
         access_token = refresh_access_token()
         return JsonResponse({"access_token": access_token})
