@@ -11,7 +11,18 @@
   </head>
   <body>
     <h1>Book a Meeting with Me</h1>
-
+    <form method="POST" action="{% url 'BookMeeting:bookmeeting' %}">
+      {% csrf_token %}
+      <input type="text" name="name" placeholder="Your Name">
+      <input type="email" name="email" placeholder="Your Email">
+      <input type="hidden" name="calendly_uri" value="https://calendly.com/thasniabbas76/30min">
+      <button type="submit">Book Now</button>
+  </form>
+  
+  <form action="{% url 'BookMeeting:fetch_events' %}" method="get">
+    <button type="submit">Fetch Events</button>
+  </form>
+  
     <!-- Inline widget -->
     <div
       class="calendly-inline-widget"
