@@ -59,6 +59,7 @@ def fetch_events(request):
         
         if invitee_resp.status_code == 200:
             invitees = invitee_resp.json()["collection"]
+            
             for invitee in invitees:
                 event_name = event["name"]
                 event_start_time = event["start_time"]
@@ -79,4 +80,4 @@ def fetch_events(request):
                     "invitee_email": invitee["email"],
                     "invitee_name": invitee["name"]
                 })
-    return JsonResponse({"data": "all_data"})
+    return JsonResponse({"data": all_data})
