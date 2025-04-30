@@ -6,5 +6,6 @@ class CalendlyEvent(models.Model):
     event_start_time = models.DateTimeField()
     invitee_name = models.CharField(max_length=255)
     invitee_email = models.EmailField()
+    calendly_uri = models.URLField(blank=True, null=True)
     def __str__(self):
         return f"{self.event_name} - {self.invitee_name}"
