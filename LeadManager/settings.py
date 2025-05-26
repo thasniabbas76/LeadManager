@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-_wjlw7t!a3_r$!-8mkkkr70nfxir9hg1@2-ceb5t_=gv&h2yq9'
+SECRET_KEY = '#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -125,10 +125,10 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# ZOHO API credentials
-ZOHO_CLIENT_ID = '1000.GUSALZGUANLHR4MPPIKAJZX7VBGUBX'
-ZOHO_CLIENT_SECRET = '8bece220c8d2477743194a1ad0baf92c8aa57276f1'
-ZOHO_REDIRECT_URL = 'http://localhost:8000/oauth2callback/'
-ZOHO_ACCOUNTS_URL = 'https://accounts.zoho.in'
-ZOHO_API_DOMAIN = 'https://www.zohoapis.in'
-ZOHO_SCOPE = 'ZohoCRM.modules.ALL'
+# # ZOHO API credentials
+# ZOHO_CLIENT_ID = '1000.GUSALZGUANLHR4MPPIKAJZX7VBGUBX'
+# ZOHO_CLIENT_SECRET = '8bece220c8d2477743194a1ad0baf92c8aa57276f1'
+# ZOHO_REDIRECT_URL = 'http://localhost:8000/oauth2callback/'
+# ZOHO_ACCOUNTS_URL = 'https://accounts.zoho.in'
+# ZOHO_API_DOMAIN = 'https://www.zohoapis.in'
+# ZOHO_SCOPE = 'ZohoCRM.modules.ALL'

@@ -26,3 +26,4 @@ Thumbs.db
 
 #secretcodes
 makefile
+secret_key = "django-insecure-_wjlw7t!a3_r$!-8mkkkr70nfxir9hg1@2-ceb5t_=gv&h2yq9"
